@@ -1,0 +1,24 @@
+RevolvAir.org • analyse notre air
+
+C'est avec plaisir que nous vous invitons à utiliser et partager les données publiques des stations d'analyse de qualité de l'air RevolvAir.org. 
+
+Nous vous demandons de nous aider à faire grandir la famille
+en affichant la source des données pour toute publication et diffusion utilisant les données fournies par nos services. 
+
+Par exemple :
+
+	Données fournies par RevolvAir.org
+	CC By 4.0
+	
+Exemple en format HTML :
+
+	Données fournies par <a href="https://revolvair.org">RevolvAir.org</a>
+	<a href="https://creativecommons.org/licenses/by/4.0/deed.fr">CC By 4.0</a>
+	
+
+RevolvAir.org • analyse notre air
+https://RevolvAir.org
+Tous droits réservés (c)
+
+Les données d'analyse de qualité de l'air demeurent la propriété de la société 
+Les logiciels RévolvAir inc.
