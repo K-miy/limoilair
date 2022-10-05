@@ -1,14 +1,22 @@
 # %%
+from genericpath import isdir
 import os
 import datetime as dt
 import pandas as pd
 from tqdm import tqdm
+
+from zipfile import ZipFile
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
 def daterange(start_date, end_date):
     for n in range(int((end_date - start_date).days)):
         yield start_date + dt.timedelta(n)
+
+# %% Check if unzipped zipfile
+if not os.isdir(dir_path+'/archive-stations-limoilair/'):
+    with ZipFile('archive-stations-limoilair.zip', 'r') as zipAir:
+        zipAir.extractall()
 
 # %% List of directories
 start_date = dt.date(2022,5,1)
@@ -20,7 +28,7 @@ data_dir_list = [dir_path+'/archive-stations-limoilair/'+d+'/' for d in data_dat
 # %% Load data per dir 
 
 # Load all index files for lat-lon and features of sensors
-df_index_list = [pd.read_csv(dir+"/index.csv") for dir in data_dir_list]
+df_index_list = [pd.read_csv(dir+"index.csv") for dir in data_dir_list]
 df_indexes = pd.concat(df_index_list).drop_duplicates().reset_index(drop=True)
 # Spaces seems left on columns names ...
 df_indexes.rename(columns=lambda x: x.strip(), inplace=True)
@@ -50,6 +58,8 @@ for dir in tqdm(data_dir_list):
     df_dir_cat.append(df_files)
 
 # %% Save all sensors per day
+if not os.isdir(dir_path+'/par_date/'):
+    os.mkdir('par_date')
 for df in tqdm(df_dir_cat):
     df.to_csv(dir_path+'/par_date/'+df['Date'].iloc[0]+'.csv')
 
