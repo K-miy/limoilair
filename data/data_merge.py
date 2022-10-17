@@ -1,11 +1,11 @@
 # %%
-from genericpath import isdir
-import os
 import datetime as dt
-import pandas as pd
-from tqdm import tqdm
-
+import os
 from zipfile import ZipFile
+
+import pandas as pd
+from genericpath import isdir
+from tqdm import tqdm
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
@@ -14,7 +14,7 @@ def daterange(start_date, end_date):
         yield start_date + dt.timedelta(n)
 
 # %% Check if unzipped zipfile
-if not os.isdir(dir_path+'/archive-stations-limoilair/'):
+if not isdir(dir_path+'/archive-stations-limoilair/'):
     with ZipFile('archive-stations-limoilair.zip', 'r') as zipAir:
         zipAir.extractall()
 
@@ -58,12 +58,14 @@ for dir in tqdm(data_dir_list):
     df_dir_cat.append(df_files)
 
 # %% Save all sensors per day
-if not os.isdir(dir_path+'/par_date/'):
+if not isdir(dir_path+'/par_date/'):
     os.mkdir('par_date')
 for df in tqdm(df_dir_cat):
     df.to_csv(dir_path+'/par_date/'+df['Date'].iloc[0]+'.csv')
 
 # %% Concat all dates in same file
 # WAY too much memory for my laptop :)
-# df_all = pd.concat(df_dir_cat).drop_duplicates().reset_index(drop=True)
-# df_all.to_csv(dir_path+'/all.csv')
+df_all = pd.concat(df_dir_cat).drop_duplicates().reset_index(drop=True)
+df_all.to_csv(dir_path+'/all.csv')
+
+# %%

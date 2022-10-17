@@ -1,6 +1,7 @@
 # keep data zipped
 data/archive-stations-limoilair/
 par_date/
+all.csv
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
