@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+# %%
 import os
 
 import numpy as np
@@ -11,27 +12,41 @@ import matplotlib.pyplot as plt
 from scipy.interpolate import griddata
 import geojsoncontour
 import scipy as sp
-import scipy.ndimage
+import scipy.ndimage as ndimage
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
-# Setup
-temp_mean = 12
-temp_std  = 2
-debug     = False
+# %%
+# Load data
 
-# Setup colormap
-colors = ['#d7191c',  '#fdae61',  '#ffffbf',  '#abdda4',  '#2b83ba']
-vmin   = temp_mean - 2 * temp_std
-vmax   = temp_mean + 2 * temp_std
-levels = len(colors)
-cm     = branca.colormap.LinearColormap(colors, vmin=vmin, vmax=vmax).to_step(levels)
+df = pd.read_csv(dir_path+"/data/"+"all.csv")
+
+pm25_mean = df['PM25 (ug/m3)'].mean()
+pm25_std = df['PM25 (ug/m3)'].std()
+
+# Remove outliers via OneClass SVM
+# df['PM25_noout'] = 
+
+# %%
 
 # Create a dataframe with fake data
 df = pd.DataFrame({
     'latitude':    np.random.normal(46.82,     0.03,     1000),
     'longitude':   np.random.normal(-71.22,     0.04,     1000),
-    'PM2.5': np.random.normal(temp_mean, temp_std, 1000)})
+    'PM2.5': np.random.normal(pm25_mean, pm25_std, 1000)})
+
+# %%
+
+# Setup
+debug     = False
+
+# Setup colormap
+colors = ['#d7191c',  '#fdae61',  '#ffffbf',  '#abdda4',  '#2b83ba']
+vmin   = pm25_mean - 2 * pm25_std
+vmax   = pm25_mean + 2 * pm25_std
+levels = len(colors)
+cm     = branca.colormap.LinearColormap(colors, vmin=vmin, vmax=vmax).to_step(levels)
+
 
 # The original data
 x_orig = np.asarray(df.longitude.tolist())
@@ -83,7 +98,7 @@ plugins.Fullscreen(position='topright', force_separate_button=True).add_to(geoma
 
 
 # Plot the data
-with open(dir_path+'/folium_contour_temperature_map.html','wb') as f:
+with open(dir_path+'/folium_contour_pm25_map.html','wb') as f:
     geomap.save(f)
     
     
